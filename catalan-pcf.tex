@@ -1,0 +1,161 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\makeatletter
+\def\ps@proofguide{%
+  \def\@oddhead{\small\sffamily POLYNOMIAL CONTINUED FRACTIONS\hfil Catalan's constant}%
+  \def\@oddfoot{\hfil\small\thepage}%
+}
+\makeatother
+\pagestyle{proofguide}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+
+\newtheorem*{theorem}{Identity}
+\title{A continued fraction for \(1/(2G)\)}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{proofguide}
+\vspace{-3em}
+
+\begin{theorem}
+Let \(G=\sum_{k=0}^{\infty}(-1)^k/(2k+1)^2\) be Catalan's constant.
+For \(a_n=3n^2+3n+1\) and \(b_n=-2n^4\), the continued fraction satisfies
+\[
+  a_0+\cfrac{b_1}{a_1+\cfrac{b_2}{a_2+\ddots}}=\frac{1}{2G}.
+\]
+\end{theorem}
+
+\section{Constructing the moments}
+
+The proof represents a linear combination of the numerator and denominator
+continuants as a bounded moment. After normalization, the numerator grows
+without bound, so the coefficient of the numerator determines the limit.
+
+For \(k,n\ge0\), put
+\[
+ d_k=\frac{\binom{2k}{k}}{4^k},\qquad
+ c_k=d_k\int_0^{\pi/2}\sin^{2k}x\,dx,\qquad
+ B_{n,k}=\int_0^1(1-t)^n t^{2k}\,dt,\qquad
+ M_n=\sum_{k\ge0} c_k B_{n,k}.
+\]
+Integration by parts gives the even sine integral \((\pi/2)d_k\).
+Thus \(c_k=(\pi/2)d_k^2\), and the ratio of successive central binomial
+coefficients gives
+\begin{equation}
+ (2k+2)^2 c_{k+1}=(2k+1)^2 c_k.
+ \label{eq:coeff}
+\end{equation}
+The Wallis product \(W_k=\prod_{j=1}^k(2j)^2/((2j-1)(2j+1))\)
+satisfies \((2k+1)c_kW_k=\pi/2\), by cancellation in the product.
+As \(W_k\to\pi/2\), both \((2k+1)c_k\) and \(2kc_k\) tend to \(1\).
+
+Integration by parts, or the factorial expression
+\(B_{n,k}=n!(2k)!/(2k+n+1)!\), gives
+\begin{equation}
+ B_{0,k}=\frac{1}{2k+1},\qquad
+ B_{n+1,k}=\frac{n+1}{2k+n+2}B_{n,k}.
+ \label{eq:beta}
+\end{equation}
+Since \(0\le B_{n,k}\le B_{0,k}\) and \(c_k/(2k+1)=O(k^{-2})\),
+all the moment sums converge and \(0\le M_n\le M_0\).
+
+\newpage
+\section{The first two moments}
+
+The binomial series for \((1-s^2)^{-1/2}\), integrated from \(0\) to \(s\)
+and divided by \(s\), gives
+\[
+ \frac{\arcsin s}{s}=\sum_{k\ge0}\frac{d_k s^{2k}}{2k+1},
+ \qquad 0<s<1.
+\]
+Set \(s=\sin x\) and integrate on \([0,\pi/2]\). The series terms are
+nonnegative, so monotone convergence allows termwise integration.
+The resulting sum is \(M_0\). The substitution \(x=2\arctan t\) gives
+\[
+ M_0=\int_0^{\pi/2}\frac{x}{\sin x}\,dx
+     =2\int_0^1\frac{\arctan t}{t}\,dt
+     =2\sum_{k\ge0}\frac{(-1)^k}{(2k+1)^2}=2G.
+\]
+For the last equality, expand \(\arctan t/t\) on \(0<t<1\). The sum of
+the integrals of the absolute values is \(\sum_{k\ge0}(2k+1)^{-2}\),
+which justifies the exchange of sum and integral.
+
+Equation~\eqref{eq:beta} gives \(B_{0,k}-B_{1,k}=1/(2k+2)\).
+Equation~\eqref{eq:coeff} rewrites \(c_k/(2k+2)\) as
+\(2(k+1)c_{k+1}-2kc_k\). The sum telescopes, yielding
+\[
+ M_0-M_1=\lim_{N\to\infty}2Nc_N=1.
+\]
+
+\section{The moment recurrence}
+
+Fix \(n\ge0\), and write \(A=(n+2)^2\), \(D=a_{n+1}\), and
+\(C=2(n+1)^2\). Define \(f_k=2kc_k(n+1)B_{n,k}\). Using
+equations~\eqref{eq:coeff} and~\eqref{eq:beta} together with
+\[
+ \frac{B_{n,k+1}}{B_{n,k}}
+ =\frac{(2k+1)(2k+2)}{(2k+n+2)(2k+n+3)},
+\]
+substitution and clearing denominators gives
+\[
+ c_k\bigl(A B_{n+2,k}-D B_{n+1,k}+C B_{n,k}\bigr)=f_k-f_{k+1}.
+\]
+The boundary terms vanish as \(f_0=0\) and \(f_k\to0\), since
+\(2kc_k\to1\) and \(B_{n,k}\le1/(2k+1)\). Summing establishes
+\begin{equation}
+ (n+2)^2 M_{n+2}=a_{n+1}M_{n+1}-2(n+1)^2M_n .
+ \label{eq:recurrence}
+\end{equation}
+
+\newpage
+\section{Matching the continuants and taking the limit}
+
+For \(m\ge1\), the numerator \(P_m\) and denominator \(Q_m\) of the
+\(m\)-th convergent satisfy \(Z_m=a_m Z_{m-1}+b_m Z_{m-2}\).
+Begin with \((P_{-1},P_0)=(1,1)\) and
+\((Q_{-1},Q_0)=(0,1)\).
+Set \(U_n=P_{n-1}/(n!)^2\) and \(V_n=Q_{n-1}/(n!)^2\).
+Dividing the recurrence at \(m=n+1\) by \(((n+1)!)^2\) gives
+equation~\eqref{eq:recurrence} for both normalized sequences.
+Their initial pairs are \((U_0,U_1)=(1,1)\) and \((V_0,V_1)=(0,1)\).
+The first two moments therefore determine the entire sequence as
+\[
+ M_n=M_0U_n-V_n.
+\]
+
+To show that \(U_n\) grows, rewrite its recurrence as
+\[
+ (n+2)^2(U_{n+2}-U_{n+1})
+ =2(n+1)^2(U_{n+1}-U_n)+(n+1)U_{n+1}.
+\]
+The first increment from \(U_1\) to \(U_2=5/4\) is \(1/4\). If
+\(U_{n+1}-U_n\ge1/4\) and \(U_{n+1}\ge1\) for \(n\ge1\), the
+right-hand side is at least \((n+1)^2/2+(n+1)\ge(n+2)^2/4\).
+Induction gives \(U_n\ge1+(n-1)/4\) for \(n\ge1\).
+
+Since \(M_n\) is bounded and \(U_n\to\infty\),
+\[
+ \frac{V_n}{U_n}=M_0-\frac{M_n}{U_n}\longrightarrow M_0=2G.
+\]
+The limit is positive because \(M_0-M_1=1\) and \(M_1\ge0\).
+Consequently \(V_n\) is eventually nonzero. Inverting the ratio cancels
+the factorial scales and gives \(P_{n-1}/Q_{n-1}\to1/(2G)\).
+
+\section*{Reading the Lean proof}
+
+\begin{raggedright}
+In \texttt{PcfProof/Catalan.lean}, \texttt{ellCoeff} is \(c_k\) and
+\texttt{betaEntry} defines \(B_{n,k}\) by its recurrence.
+\texttt{integral\_eq\_catalan} evaluates the integral for \(M_0\),
+\texttt{moment\_recurrence} proves equation~\eqref{eq:recurrence}, and
+\texttt{limit\_of\_moments} derives convergence.
+
+The theorem
+\texttt{CatalanPCF.catalan\_pcf\_target} assembles these steps.
+\end{raggedright}
+\end{document}

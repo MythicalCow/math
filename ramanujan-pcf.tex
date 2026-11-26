@@ -1,14 +1,27 @@
 \documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
+\usepackage[letterpaper,margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 
-\newtheorem{theorem}{Theorem}
+\makeatletter
+\def\ps@proofguide{%
+  \def\@oddhead{\small\sffamily POLYNOMIAL CONTINUED FRACTIONS\hfil rm-z2-new8}%
+  \def\@oddfoot{\hfil\small\thepage}%
+}
+\makeatother
+\pagestyle{proofguide}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+
+\newtheorem*{theorem}{Identity}
 \title{A polynomial continued fraction for a transform of \(\pi^2\)}
 \author{MythicalCow}
 \date{}
 
 \begin{document}
 \maketitle
+\thispagestyle{proofguide}
+\vspace{-1.5em}
 
 \begin{theorem}
 Let \(a_n=3n^2+9n+7\) for \(n\ge 0\) and
@@ -21,7 +34,9 @@ satisfies
 \]
 \end{theorem}
 
-\begin{proof}
+\section{Continuants and moments}
+The proof evaluates the numerator and denominator after dividing both by
+the same scale. A trigonometric moment controls the error in each limit.
 Let \(P_n,Q_n\) be the numerator and denominator continuants. Both satisfy
 \(Z_n=a_nZ_{n-1}+b_nZ_{n-2}\) for \(n\ge1\), with
 \((P_{-1},P_0)=(1,7)\) and \((Q_{-1},Q_0)=(0,1)\).
@@ -31,8 +46,10 @@ Put \(L=\pi/2\), \(u(x)=1-\cos x\), and
  M_n=\int_0^L(L-x)u(x)^n\,dx,\qquad
  g_n=(n+1)(2n+1),\qquad h_n=(n+1)^2.
 \]
-Then \(0\le M_n\le M_0=\pi^2/8\). Since
-\((u^{n+1})''=g_nu^n-h_nu^{n+1}\), the derivative of
+Because \(0\le u(x)\le1\) on \([0,L]\), we have
+\(0\le M_n\le M_0=L^2/2=\pi^2/8\). Using
+\((u')^2=2u-u^2\) and \(u''=1-u\), differentiation gives
+\((u^{n+1})''=g_nu^n-h_nu^{n+1}\). The derivative of
 \((L-x)(u^{n+1})'+u^{n+1}\) is \((L-x)(g_nu^n-h_nu^{n+1})\).
 The expression being differentiated is \(0\) at \(x=0\) and \(1\) at
 \(x=L\), so
@@ -40,7 +57,9 @@ The expression being differentiated is \(0\) at \(x=0\) and \(1\) at
  g_nM_n-h_nM_{n+1}=1.
 \end{equation}
 
-Consider the triangular recurrence
+\section{Matching the recurrences}
+The moment relation suggests a triangular system whose solutions can be
+projected onto the continuant recurrence. Consider the triangular recurrence
 \(X_{n+1}=g_nX_n+Y_n\), \(Y_{n+1}=h_nY_n\), with
 \((X_0,Y_0)=(s,t)\). Set
 \begin{align*}
@@ -55,6 +74,7 @@ polynomials gives
  d_{n+2}g_{n+1}g_n&=a_{n+2}d_{n+1}g_n+b_{n+2}d_n,\\
  d_{n+2}g_{n+1}+h_nr_{n+1}&=a_{n+2}r_n+b_{n+2}c_n .
 \end{align*}
+\newpage
 Thus \(W_{n+2}=a_{n+2}W_{n+1}+b_{n+2}W_n\). At \(n=0,1\) its
 values are \(80s+96t\) and \(1584s+1952t\), respectively. Matching these
 initial values yields
@@ -62,6 +82,7 @@ initial values yields
  W_n=(8s+16t)P_n+(24s-16t)Q_n .
 \]
 
+\section{The common scale and the limit}
 Let \(S_n=\prod_{k=0}^{n-1}g_k\) and
 \(F_n=\prod_{k=0}^{n-1}h_k\), with empty products equal to \(1\).
 Equation~\eqref{eq:moment} gives
@@ -88,10 +109,11 @@ is eventually nonzero and the quotient converges to
  \lim_{n\to\infty}\frac{P_n}{Q_n}
  =\frac{2+3M_0}{2-M_0}=\frac{3\pi^2+16}{16-\pi^2}.
 \]
-\end{proof}
-
-\noindent
-The companion Lean theorem is \verb|PCF.pcf_target| in
-\verb|PcfProof/PCF.lean|.
+\section*{Reading the Lean proof}
+In \texttt{PcfProof/PCF.lean}, \texttt{moment\_recurrence} derives
+equation~\eqref{eq:moment}, and \texttt{project\_eq} matches the continuants.
+The formal argument uses a reciprocal bound on \(F_n/S_n\), which
+also suffices to make the error vanish. The theorem
+\texttt{PCF.pcf\_target} takes the quotient of the two limits.
 
 \end{document}

@@ -33,7 +33,7 @@ lemma wronskian (a b : ℕ → ℝ) (n : ℕ) :
   simp only [P, Q, step]
   ring
 
--- Target: Ramanujan Machine conjecture `rm-z2-new8` (NEW AND UNPROVEN)
+-- Target: Ramanujan Machine conjecture `rm-z2-new8`
 -- aₙ = 3n² + 9n + 7  (n ≥ 0)
 -- bₙ = -(2n⁴ + 3n³ - 3n² - 7n - 3)  (n ≥ 1)
 def targetA (n : ℕ) : ℝ := 3 * (n : ℝ) ^ 2 + 9 * (n : ℝ) + 7
