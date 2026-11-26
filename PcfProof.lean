@@ -1,3 +1,4 @@
 import PcfProof.Basic
 import PcfProof.PCF
 import PcfProof.Rounding
+import PcfProof.Catalan
